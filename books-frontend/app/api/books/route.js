@@ -1,16 +1,17 @@
-import { NextResponse } from "next/server";
-import pool from "../../../lib/db.js";
-
+import pool from "@/lib/db";
 
 export async function GET() {
+  console.log("DATABASE_URL =", process.env.DATABASE_URL);
+
   try {
     const result = await pool.query(
-      "SELECT title, category, price, availability, rating, image_url FROM books LIMIT 50"
+      "SELECT id, title FROM books ORDER BY id DESC"
     );
-    return NextResponse.json(result.rows);
-  } catch (err) {
-    return NextResponse.json(
-      { error: err.message },
+    return Response.json({ data: result.rows });
+  } catch (error) {
+    console.error("DB ERROR:", error.message);
+    return Response.json(
+      { data: [], error: error.message },
       { status: 500 }
     );
   }
