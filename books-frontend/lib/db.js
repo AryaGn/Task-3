@@ -1,11 +1,11 @@
-import { Pool } from "pg";
+import pkg from "pg";
+const { Pool } = pkg;
 
 const pool = new Pool({
-  host: "localhost",
-  user: "postgres",
-  password: "postgres123",
-  database: "books_db",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 export default pool;
